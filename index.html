@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <link rel="icon" href="./img/pokemon-1635610_640.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="./script/api.js"></script>
+    <script src="./script/Templates.js"></script>
+    <script src="./script/search.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body onload="render()">
+    <section>
+        <header>
+            <div class="header_nav">
+                <img onclick="render()" src="img/Pokemon_img.png" alt="logo" style="width: 300px; height: 100px; cursor: pointer; margin-top: 10px;">
+
+                <div class="header_search">
+                    <input id="search" type="text" placeholder="Enter a Name" 
+                        style="width: 170px; height: 20px; border-radius: 10px; border: 3px solid #2F66B1; padding: 10px; margin: 10px;">
+                    <img src="icons/magnifier.svg" alt="magnifying glass" 
+                         onclick="searchPokemon()" 
+                         style="width: 30px; height: 30px; position: relative; top: 10px; cursor: pointer;">
+                </div>
+            </div>
+        </header>
+    </section>
+    <div id="pokemon-container"></div>
+    <div id="search-dropdown" style="display: none;"></div>
+    <div id="back-home-container" style="text-align: center; margin: 20px; display: none;">
+        <button id="back-home-btn" onclick="backToHome()" 
+                style="padding: 12px 24px; font-size: 16px; background: #2F66B1; 
+                       color: white; border: none; border-radius: 8px; cursor: pointer; 
+                       box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.2s;">
+            ← Back to Home
+        </button>
+    </div>      
+    <div id="loading-container" style="display: none;"></div>
+    <div id="load-more-container" style="text-align: center; margin: 20px;">
+        <button id="load-more-btn" onclick="loadMorePokemon()" 
+                style="padding: 12px 24px; font-size: 16px; background: bisque;
+                       color: black; border: none; border-radius: 8px; cursor: pointer; 
+                       box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.2s;">
+            Load 25 More Pokemon
+        </button>
+    </div>
+</body>
+
+</html>
