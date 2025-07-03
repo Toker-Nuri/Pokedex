@@ -10,12 +10,13 @@ function isValidPokemonId(id) {
 
 async function safeFetch(url) {
     try {
-        let response = await fetch(url);
-        return response;
+      let response = await fetch(url);
+      return response;
     } catch (error) {
-        return { ok: false, status: 404 };
+      return { ok: false, status: 404 };
     }
-}
+  }
+
 
 async function loadPokemon(id) {
     if (!isValidPokemonId(id)) {

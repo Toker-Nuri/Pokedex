@@ -19,43 +19,61 @@ function initializeSearchDropdown() {
 async function searchPokemon() {
     let searchInput = document.getElementById('search');
     let searchValue = searchInput.value.toLowerCase().trim();
+  
     if (searchValue === '') {
-        return;
+      return;
+    }
+    if (!POKEMON_NAMES.includes(searchValue) && isNaN(parseInt(searchValue))) {
+      enterSearchMode();
+      pokemonContainer.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #666;">
+          <h2 style="color: #2F66B1;">Pokemon not found!</h2>
+          <p>No Pokemon named "${searchValue}" was found.</p>
+          <p>Try searching for:</p>
+          <ul style="list-style: none; padding: 0;">
+            <li>• <strong>pikachu</strong></li>
+            <li>• <strong>charizard</strong></li>
+            <li>• <strong>bulbasaur</strong></li>
+            <li>• Or use Pokemon ID (1–1010)</li>
+          </ul>
+        </div>
+      `;
+      return;
     }
     hideSearchDropdown();
     enterSearchMode();
     showLoading(`Searching for "${searchValue}"...`);
     try {
-        let pokemon = await loadPokemonSafely(searchValue);
-        if (pokemon) {
-            pokemonContainer.innerHTML = '';
-            displayPokemon(pokemon);
-        } else {
-            pokemonContainer.innerHTML = `
-                <div style="text-align: center; padding: 40px; color: #666;">
-                    <h2 style="color: #2F66B1;">Pokemon not found!</h2>
-                    <p>No Pokemon named "${searchValue}" was found.</p>
-                    <p>Try searching for:</p>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>• <strong>pikachu</strong></li>
-                        <li>• <strong>charizard</strong></li>
-                        <li>• <strong>bulbasaur</strong></li>
-                        <li>• Or use Pokemon ID (1-1010)</li>
-                    </ul>
-                </div>
-            `;
-        }
-    } catch (error) {
+      let pokemon = await loadPokemonSafely(searchValue);
+      if (pokemon) {
+        pokemonContainer.innerHTML = '';
+        displayPokemon(pokemon);
+      } else {
         pokemonContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #666;">
-                <h2 style="color: #2F66B1;">Search Error</h2>
-                <p>Something went wrong. Please try again.</p>
-            </div>
+          <div style="text-align: center; padding: 40px; color: #666;">
+            <h2 style="color: #2F66B1;">Pokemon not found!</h2>
+            <p>No Pokemon named "${searchValue}" was found.</p>
+            <p>Try searching for:</p>
+            <ul style="list-style: none; padding: 0;">
+              <li>• <strong>pikachu</strong></li>
+              <li>• <strong>charizard</strong></li>
+              <li>• <strong>bulbasaur</strong></li>
+              <li>• Or use Pokemon ID (1–1010)</li>
+            </ul>
+          </div>
         `;
+      }
+    } catch (error) {
+      pokemonContainer.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #666;">
+          <h2 style="color: #2F66B1;">Search Error</h2>
+          <p>Something went wrong. Please try again.</p>
+        </div>
+      `;
     } finally {
-        hideLoading();
+      hideLoading();
     }
-}
+  }
 
 async function loadPokemonSafely(nameOrId) {
     try {
@@ -70,40 +88,6 @@ async function loadPokemonSafely(nameOrId) {
     } catch (error) {
         return null;
     }
-}
-
-function showSearchMessage(message, type = 'info') {
-    let existingMessage = document.getElementById('search-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
-    let messageElement = document.createElement('div');
-    messageElement.id = 'search-message';
-    messageElement.style.cssText = `
-        position: fixed;
-        top: 150px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-weight: 500;
-        z-index: 1001;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        transition: opacity 0.3s ease;
-    `;
-
-    messageElement.textContent = message;
-    document.body.appendChild(messageElement);
-    setTimeout(() => {
-        if (messageElement.parentNode) {
-            messageElement.style.opacity = '0';
-            setTimeout(() => {
-                if (messageElement.parentNode) {
-                    messageElement.remove();
-                }
-            }, 300);
-        }
-    }, 3000);
 }
 
 function showAutocomplete(searchTerm) {
